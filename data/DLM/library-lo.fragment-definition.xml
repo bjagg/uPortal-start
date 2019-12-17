@@ -19,17 +19,12 @@
     under the License.
 
 -->
-<pags-group script="classpath://org/jasig/portal/io/import-pags-group_v4-1.crn">
-  <name>Layout Personalizers</name>
-  <description>People that customized their layout</description>
-  <selection-test>
-    <test-group>
-      <test>
-        <attribute-name>layoutNodesCount</attribute-name>
-        <tester-class>org.apereo.portal.groups.pags.testers.IntegerGTTester</tester-class>
-        <test-value>0</test-value>
-      </test>
-    </test-group>
-  </selection-test>
-</pags-group>
-
+<fragment-definition xmlns:dlm="http://org.apereo.portal.layout.dlm.config" script="classpath://org/jasig/portal/io/import-fragment-definition_v3-1.crn">
+  <dlm:fragment name="Library" ownerID="library-lo" precedence="40">
+    <dlm:audience evaluatorFactory="org.apereo.portal.layout.dlm.providers.GroupMembershipEvaluatorFactory">
+      <paren mode="OR">
+        <attribute mode="deepMemberOf" name="Layout Personalizers"/>
+      </paren>
+    </dlm:audience>
+  </dlm:fragment>
+</fragment-definition>
