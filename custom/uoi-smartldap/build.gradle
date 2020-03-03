@@ -1,0 +1,15 @@
+description = "UoI Custom classes for SmartLDAP"
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jasig.portal:uPortal-groups-smartldap:${uPortalVersion}"
+    compileOnly "${portletApiDependency}"
+    compileOnly "${servletApiDependency}"
+}
