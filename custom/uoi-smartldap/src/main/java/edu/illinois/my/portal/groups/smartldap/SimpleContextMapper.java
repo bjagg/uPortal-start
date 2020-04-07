@@ -79,23 +79,7 @@ public final class SimpleContextMapper implements ContextMapper {
         try {
             DirContextAdapter context = (DirContextAdapter) ctx;
 
-            LdapName groupKeyDn = (LdapName) context.getDn();
-            StringBuilder dnBuilder = new StringBuilder();
-            for (int i = groupKeyDn.size() - 1; i >= 0; i--) {
-                if (convertRdnKeysToUpperCase) {
-                    dnBuilder.append(groupKeyDn.getRdn(i).getType().toUpperCase());
-                } else {
-                    dnBuilder.append(groupKeyDn.getRdn(i).getType());
-                }
-                dnBuilder.append('=').append(groupKeyDn.getRdn(i).getValue());
-                if (i != 0) {
-                    dnBuilder.append(',');
-                }
-            }
-            String key = dnBuilder.toString();
-            if (log.isDebugEnabled()) {
-                log.debug("SmartLdap ContextMapper DN: " + key);
-            }
+            String key = buildKey(context);
             String groupName = (String) context.getStringAttribute(groupNameAttributeName);
 
             IEntityGroup g = new EntityTestingGroupImpl(key, IPerson.class);
@@ -126,6 +110,27 @@ public final class SimpleContextMapper implements ContextMapper {
             throw new RuntimeException(msg, t);
         }
         return rslt;
+    }
+
+    private String buildKey(DirContextAdapter context) {
+        LdapName groupKeyDn = (LdapName) context.getDn();
+        StringBuilder dnBuilder = new StringBuilder();
+        for (int i = groupKeyDn.size() - 1; i >= 0; i--) {
+            if (convertRdnKeysToUpperCase) {
+                dnBuilder.append(groupKeyDn.getRdn(i).getType().toUpperCase());
+            } else {
+                dnBuilder.append(groupKeyDn.getRdn(i).getType());
+            }
+            dnBuilder.append('=').append(groupKeyDn.getRdn(i).getValue());
+            if (i != 0) {
+                dnBuilder.append(',');
+            }
+        }
+        String key = dnBuilder.toString();
+        if (log.isDebugEnabled()) {
+            log.debug("SmartLdap ContextMapper DN: " + key);
+        }
+        return key;
     }
 
     public void setConvertRdnKeysToUpperCase(boolean convertRdnKeysToUpperCase) {
