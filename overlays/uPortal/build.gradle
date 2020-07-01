@@ -8,6 +8,8 @@ plugins {
 dependencies {
     runtime "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
     compile configurations.jdbc
+
+    compile project(':custom:msts-api-rest')
 }
 
 apply plugin: GradleImportExportPlugin

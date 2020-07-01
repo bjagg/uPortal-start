@@ -21,3 +21,5 @@ include 'overlays:SimpleContentPortlet'
 include 'overlays:uPortal'
 include 'overlays:WeatherPortlet'
 include 'overlays:WebProxyPortlet'
+
+include 'custom:msts-api-rest'
