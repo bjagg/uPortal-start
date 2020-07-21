@@ -11,6 +11,8 @@ repositories {
 dependencies {
     compileOnly "org.apache.portals.pluto:pluto-container-api:${plutoVersion}"
     compileOnly "org.jasig.portal:uPortal-api-rest:${uPortalVersion}"
+    compileOnly "org.jasig.portal:uPortal-io-jaxb:${uPortalVersion}"
+    compileOnly "org.jasig.portal:uPortal-io-types:${uPortalVersion}"
 
     compileOnly "${portletApiDependency}"
     compileOnly "${servletApiDependency}"

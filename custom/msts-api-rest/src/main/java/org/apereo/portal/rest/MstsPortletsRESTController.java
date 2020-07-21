@@ -14,18 +14,14 @@
  */
 package org.apereo.portal.rest;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.pluto.container.om.portlet.impl.PreferenceType;
 import org.apereo.portal.EntityIdentifier;
-import org.apereo.portal.layout.LayoutPortlet;
+import org.apereo.portal.IUserIdentityStore;
+import org.apereo.portal.io.xml.portlet.ExternalPortletDefinition;
+import org.apereo.portal.io.xml.portlet.PortletDefinitionImporterExporter;
+import org.apereo.portal.io.xml.portlet.PortletPortalDataType;
+import org.apereo.portal.portlet.dao.IPortletDefinitionDao;
 import org.apereo.portal.portlet.dao.jpa.PortletPreferenceImpl;
 import org.apereo.portal.portlet.om.IPortletDefinition;
 import org.apereo.portal.portlet.om.IPortletPreference;
@@ -50,6 +46,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 /**
  * Custom JSON portlet API endpoints.
  *
@@ -58,19 +64,37 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MstsPortletsRESTController {
 
-    @Autowired private IPortletDefinitionRegistry portletDefinitionRegistry;
-
-    @Autowired private IPortletCategoryRegistry portletCategoryRegistry;
-
-    @Autowired private IPersonManager personManager;
-
-    @Autowired private PortalHttpServletFactoryService servletFactoryService;
-
-    @Autowired private IPortletWindowRegistry portletWindowRegistry;
-
-    @Autowired private IPortletExecutionManager portletExecutionManager;
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private IPortletDefinitionRegistry portletDefinitionRegistry;
+    @Autowired
+    private IPortletCategoryRegistry portletCategoryRegistry;
+    @Autowired
+    private IPersonManager personManager;
+    @Autowired
+    private PortalHttpServletFactoryService servletFactoryService;
+    @Autowired
+    private IPortletWindowRegistry portletWindowRegistry;
+    @Autowired
+    private IPortletExecutionManager portletExecutionManager;
+    @Autowired
+    private PortletPortalDataType typeRegistry;
+    @Autowired
+    private IPortletCategoryRegistry categoryRegistry;
+    @Autowired
+    private IPortletDefinitionDao definitionDao;
+    @Autowired
+    private IUserIdentityStore identityStore;
+    private PortletDefinitionImporterExporter exporter;
+
+    @PostConstruct
+    private void postConstruct() {
+        exporter = new PortletDefinitionImporterExporter();
+        exporter.setPortletDefinitionRegistry(definitionDao);
+        exporter.setUserIdentityStore(identityStore);
+        exporter.setPortletCategoryRegistry(categoryRegistry);
+        exporter.setPortletPortalDataType(typeRegistry);
+    }
 
     /**
      * Provides information about all portlets in the portlet registry. NOTE: The response is
@@ -87,16 +111,13 @@ public class MstsPortletsRESTController {
         /*
          * Can customize PortletTuple class and use it below to change what values are sent through the JSON response.
          */
-        List<IPortletDefinition> portlets = new ArrayList<>();
-        List<PortletTuple> rslt = new ArrayList<PortletTuple>();
+        List<ExternalPortletDefinition> portlets = new ArrayList<>();
         for (IPortletDefinition pdef : allPortlets) {
             if (ap.canManage(pdef.getPortletDefinitionId().getStringId())) {
-                portlets.add(pdef);
-                rslt.add(new PortletTuple(pdef));
+                final ExternalPortletDefinition epDef = getExternalPortletDef(pdef);
+                portlets.add(epDef);
             }
         }
-
-        //return new ModelAndView("json", "portlets", rslt);
         return new ModelAndView("json", "portlets", portlets);
     }
 
@@ -112,10 +133,9 @@ public class MstsPortletsRESTController {
         IPortletDefinition portletDef =
                 portletDefinitionRegistry.getPortletDefinitionByFname(fname);
         if (portletDef != null && ap.canRender(portletDef.getPortletDefinitionId().getStringId())) {
-
-            // can replace LayoutPortlet with full definition as portlets method or use PortletTuple class
-            LayoutPortlet portlet = new LayoutPortlet(portletDef);
-            return new ModelAndView("json", "portlet", portlet);
+            // can use PortletTuple class to limit fields sent
+            final ExternalPortletDefinition epDef = getExternalPortletDef(portletDef);
+            return new ModelAndView("json", "portlet", epDef);
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return new ModelAndView("json");
@@ -125,10 +145,10 @@ public class MstsPortletsRESTController {
     /**
      * Adds or updates a specific portlet preference for a portlet.
      */
-    @PostMapping ("/v5-8/portlet/{fname}/preference")
+    @PostMapping("/v5-8/portlet/{fname}/preference")
     public ModelAndView updatePortletPreference(
-        HttpServletRequest request, HttpServletResponse response, @PathVariable String fname,
-        @RequestBody PreferenceType preference) {
+            HttpServletRequest request, HttpServletResponse response, @PathVariable String fname,
+            @RequestBody PreferenceType preference) {
         logger.debug("POSTed preference for {} is: {}", fname, preference);
 
         IAuthorizationPrincipal ap = getAuthorizationPrincipal(request);
@@ -147,8 +167,8 @@ public class MstsPortletsRESTController {
 
         final List<IPortletPreference> preferences = portletDef.getPortletPreferences();
         Optional<IPortletPreference> existingPreference = preferences.stream()
-            .filter(p -> p.getName().equals(preference.getName()))
-            .findAny();
+                .filter(p -> p.getName().equals(preference.getName()))
+                .findAny();
 
         if (existingPreference.isPresent()) {
             logger.debug("Updating existing preference {} to {}", preference.getName(), fname);
@@ -183,6 +203,13 @@ public class MstsPortletsRESTController {
             rslt.add(StringUtils.capitalize(category.getName().toLowerCase()));
         }
         return rslt;
+    }
+
+    private ExternalPortletDefinition getExternalPortletDef(IPortletDefinition pdef) {
+        return Optional.ofNullable(pdef)
+                .map(IPortletDefinition::getFName)
+                .map(n -> exporter.exportData(n))
+                .orElse(null);
     }
 
     /*
