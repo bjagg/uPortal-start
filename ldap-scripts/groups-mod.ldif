@@ -1,0 +1,14 @@
+dn: cn=Special Students,ou=Groups,dc=apereo,dc=org
+changetype: modify
+replace: member
+member: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+
+dn: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+changetype: modify
+replace: member
+member: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
+
+dn: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
+changetype: modify
+replace: member
+member: uid=student,ou=People,dc=apereo,dc=org

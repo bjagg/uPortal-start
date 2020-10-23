@@ -1,0 +1,5 @@
+dn: uid=student,ou=People,dc=apereo,dc=org
+changetype: modify
+replace: memberOf
+#memberOf: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+memberOf: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org

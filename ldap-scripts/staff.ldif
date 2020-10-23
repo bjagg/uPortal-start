@@ -1,0 +1,12 @@
+dn: uid=student,ou=People.dc=apereo,dc=org
+objectClass: inetOrgPerson
+objectClass: eduPerson
+uid: student
+netid: student
+givenName: Steve
+sn: Smith
+cn: Steve Smith
+displayName: Steven Smith
+mail: steve.smith@apereo.org
+telephoneNumber: (800) 555-1234
+eduPersonPrimaryAffiliation: student

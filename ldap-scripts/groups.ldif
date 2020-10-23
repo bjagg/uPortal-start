@@ -1,0 +1,14 @@
+dn: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
+objectClass: groupOfNames
+cn: Sub Sub Special Students
+member: uid=student,ou=People,dc=apereo,dc=org
+
+dn: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+objectClass: groupOfNames
+cn: Sub Special Students
+member: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
+
+dn: cn=Special Students,ou=Groups,dc=apereo,dc=org
+objectClass: groupOfNames
+cn: Special Students
+member: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org

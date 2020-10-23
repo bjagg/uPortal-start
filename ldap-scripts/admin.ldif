@@ -1,0 +1,9 @@
+dn: dc=apereo,dc=org
+objectclass: dcObject
+objectclass: organization
+o: Apereo Foundation
+dc: apereo
+
+dn: cn=Manager,dc=apereo,dc=org
+objectclass: organizationalRole
+cn: Manager

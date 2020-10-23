@@ -1,0 +1,11 @@
+dn: ou=People,dc=apereo,dc=org
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=apereo,dc=org
+objectClass: organizationalUnit
+ou: Groups
+
+dn: ou=Groups2,dc=apereo,dc=org
+objectClass: organizationalUnit
+ou: Groups2

@@ -1,0 +1,15 @@
+# Schema to simulate Active Directory groups
+# for testing memberOf group nesting.
+dn: cn=activeDirectory,cn=schema,cn=config
+objectClass: olcSchemaCOnfig
+cn: activeDirectory
+olcAttributeTypes: ( 1.3.114.7.4.2.0.33
+    NAME 'memberOf'
+    DESC 'Active Directory-like memberOf'
+    SYNTAX '1.3.6.1.4.1.1466.115.121.1.12' )
+olcObjectClasses: ( 1.2.840.113556.1.5.8
+    NAME 'adGroup'
+    DESC 'Active Directory-like group of users'
+    SUP top STRUCTURAL
+    MUST ( cn )
+    MAY ( member $ memberOf ) )

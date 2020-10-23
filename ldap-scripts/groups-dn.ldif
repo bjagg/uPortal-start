@@ -1,0 +1,14 @@
+dn: cn=Special Students,ou=Groups,dc=apereo,dc=org
+changetype: modify
+add: seeAlso
+seeAlso: cn=Special Students,ou=Groups,dc=apereo,dc=org
+
+dn: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+changetype: modify
+add: seeAlso
+seeAlso: cn=Sub Special Students,ou=Groups,dc=apereo,dc=org
+
+dn: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
+changetype: modify
+add: seeAlso
+seeAlso: cn=Sub Sub Special Students,ou=Groups2,dc=apereo,dc=org
