@@ -48,12 +48,15 @@
         <folder id="s500" hidden="false" immutable="true" name="First Footer" type="footer-first" unremovable="true">
             <channel fname="sitemap" unremovable="true" hidden="false" immutable="false" ID="n510"/>
         </folder>
-	<folder id="s600" hidden="false" immutable="true" name="Legal Footer" type="footer-second" unremovable="true">
+        <folder id="s600" hidden="false" immutable="true" name="Legal Footer" type="footer-second" unremovable="true">
             <channel fname="legal-footer" unremovable="true" hidden="false" immutable="false" ID="n610"/>
         </folder>
         <folder ID="s700" hidden="false" immutable="true" name="Page Bottom folder" type="page-bottom" unremovable="true">
             <channel fname="attachments" unremovable="true" hidden="false" immutable="false" ID="n710"/>
             <channel fname="google-analytics-config" unremovable="true" hidden="false" immutable="false" ID="n720"/>
+        </folder>
+        <folder ID="s800" hidden="false" immutable="true" name="Sidebar Right folder" type="sidebar-right" unremovable="true">
+            <channel fname="sidebar-nav" unremovable="true" hidden="false" immutable="false" ID="n810"/>
         </folder>
     </folder>
 </layout>
