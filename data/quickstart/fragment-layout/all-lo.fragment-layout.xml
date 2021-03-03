@@ -55,7 +55,7 @@
             <channel fname="attachments" unremovable="true" hidden="false" immutable="false" ID="n710"/>
             <channel fname="google-analytics-config" unremovable="true" hidden="false" immutable="false" ID="n720"/>
         </folder>
-        <folder ID="s800" hidden="false" immutable="true" name="Sidebar Right folder" type="sidebar-right" unremovable="true">
+        <folder ID="s800" hidden="false" immutable="true" name="Sidebar left folder" type="sidebar-left" unremovable="true">
             <channel fname="sidebar-nav" unremovable="true" hidden="false" immutable="false" ID="n810"/>
         </folder>
     </folder>
