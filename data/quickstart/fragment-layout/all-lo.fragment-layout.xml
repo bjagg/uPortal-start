@@ -54,6 +54,7 @@
         <folder ID="s700" hidden="false" immutable="true" name="Page Bottom folder" type="page-bottom" unremovable="true">
             <channel fname="attachments" unremovable="true" hidden="false" immutable="false" ID="n710"/>
             <channel fname="google-analytics-config" unremovable="true" hidden="false" immutable="false" ID="n720"/>
+            <channel fname="ga-outbound-tracker" unremovable="true" hidden="false" immutable="false" ID="n730"/>
         </folder>
     </folder>
 </layout>

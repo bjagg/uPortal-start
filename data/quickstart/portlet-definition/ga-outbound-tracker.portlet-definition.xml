@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+Licensed to Apereo under one or more contributor license
+agreements. See the NOTICE file distributed with this work
+for additional information regarding copyright ownership.
+Apereo licenses this file to you under the Apache License,
+Version 2.0 (the "License"); you may not use this file
+except in compliance with the License.  You may obtain a
+copy of the License at the following location:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+
+-->
+<portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
+  <title>GA Outbound Tracker</title>
+  <name>GA Outbound Tracker</name>
+  <fname>ga-outbound-tracker</fname>
+  <desc>Outbound link tracking for Google Analytics</desc>
+  <type>Advanced CMS</type>
+  <timeout>5000</timeout>
+  <portlet-descriptor>
+    <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
+    <ns2:portletName>cms</ns2:portletName>
+  </portlet-descriptor>
+  <group>Everyone</group>
+  <parameter>
+    <name>alternate</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>blockImpersonation</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>chromeStyle</name>
+    <value>no-chrome</value>
+  </parameter>
+  <parameter>
+    <name>disableDynamicTitle</name>
+    <value>true</value>
+  </parameter>
+  <parameter>
+    <name>editable</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>hasAbout</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>hasHelp</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>hideFromMobile</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>highlight</name>
+    <value>false</value>
+  </parameter>
+  <parameter>
+    <name>iconUrl</name>
+    <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/dialog.png</value>
+  </parameter>
+  <parameter>
+    <name>mobileIconUrl</name>
+    <value>/uPortal/media/skins/icons/mobile/bullhorn.png</value>
+  </parameter>
+  <parameter>
+    <name>showChrome</name>
+    <value>false</value>
+  </parameter>
+  <portlet-preference>
+    <name>content</name>
+    <readOnly>false</readOnly>
+    <value>
+      <![CDATA[
+      <script language='Javascript' type='text/javascript'>
+          /**
+          * Function that captures a click on an outbound link in Analytics.
+          * This function takes a valid URL string as an argument, and uses that URL string
+          * as the event label. Setting the transport method to 'beacon' lets the hit be sent
+          * using 'navigator.sendBeacon' in browser that support it.
+          */
+          const captureOutboundLink = function(url, target) {
+            ga('send', 'event', 'outbound', 'click', url, {
+              'transport': 'beacon',
+              'hitCallback': () => {}
+            })
+          }
+
+          const outboundClick = (el) => {
+            const e = el.closest('a')
+            console.log(e)
+            e.preventDefault()
+            const url = e.target.href
+            const target = e.target.target
+            console.log(url)
+            console.log(target)
+            captureOutboundLink(url, target)
+            window.open(url, target)
+          }
+
+          const addListeners = () => {
+            console.log("adding listeners to new hrefs ..");
+            [...document.links].filter(a => /^http(?!.*\/uPortal\/.*)/i.test(a.href)).forEach(a => {
+              console.log(a.href)
+              a.onclick = outboundClick
+            })
+          }
+
+          window.onload = () => {
+            const observer = new MutationObserver(addListeners)
+            observer.observe(document.body, {attributeFilter: ["href"], childList: true, subtree: true})
+
+            addListeners()
+          }
+      </script>
+        ]]>
+    </value>
+  </portlet-preference>
+</portlet-definition>
