@@ -99,11 +99,12 @@ under the License.
           }
 
           const outboundClick = (el) => {
-            const e = el.closest('a')
+            console.log(el)
+            const e = el.path[0].closest('a')
             console.log(e)
-            e.preventDefault()
-            const url = e.target.href
-            const target = e.target.target
+            el.preventDefault()
+            const url = e.href
+            const target = e.target
             console.log(url)
             console.log(target)
             captureOutboundLink(url, target)
@@ -118,11 +119,32 @@ under the License.
             })
           }
 
+          const addGridListeners = () => {
+            if (!document.querySelector("esco-content-grid")) {
+              console.log("no grid")
+              return;
+            }
+            console.log("updating grid_links...");
+            let grid_links = document.querySelector("esco-content-grid").shadowRoot.querySelectorAll("a");
+            [...grid_links].filter(a => /^http(?!.*\/uPortal\/.*)/i.test(a.href)).forEach(a => {
+              console.log(a.href)
+              if (a.onclick == outboundClick) {
+                console.log("onclick set")
+              } else {
+                console.log("onclick not set yet")
+                a.onclick = outboundClick
+              }
+            })
+          }
+
           window.onload = () => {
             const observer = new MutationObserver(addListeners)
             observer.observe(document.body, {attributeFilter: ["href"], childList: true, subtree: true})
 
             addListeners()
+            addGridListeners()
+
+            setInterval(addGridListeners, 1000);
           }
       </script>
         ]]>
