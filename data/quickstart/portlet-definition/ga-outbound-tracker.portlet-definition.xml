@@ -91,8 +91,8 @@ under the License.
           * as the event label. Setting the transport method to 'beacon' lets the hit be sent
           * using 'navigator.sendBeacon' in browser that support it.
           */
-          const captureOutboundLink = function(url, target) {
-            ga('send', 'event', 'outbound', 'click', url, {
+          const captureOutboundLink = function(title, url, target) {
+            ga('send', 'event', 'outbound', 'click', title, {
               'transport': 'beacon',
               'hitCallback': () => {}
             })
@@ -100,6 +100,8 @@ under the License.
 
           const outboundClick = (el) => {
             console.log(el)
+            let title = el.path[0].closest('div.portlet-card').innerText;
+            console.log(title)
             const e = el.path[0].closest('a')
             console.log(e)
             el.preventDefault()
@@ -107,7 +109,7 @@ under the License.
             const target = e.target
             console.log(url)
             console.log(target)
-            captureOutboundLink(url, target)
+            captureOutboundLink(title, url, target)
             window.open(url, target)
           }
 
@@ -125,15 +127,18 @@ under the License.
               return;
             }
             console.log("updating grid_links...");
-            let grid_links = document.querySelector("esco-content-grid").shadowRoot.querySelectorAll("a");
-            [...grid_links].filter(a => /^http(?!.*\/uPortal\/.*)/i.test(a.href)).forEach(a => {
-              console.log(a.href)
-              if (a.onclick == outboundClick) {
-                console.log("onclick set")
-              } else {
-                console.log("onclick not set yet")
-                a.onclick = outboundClick
-              }
+            let grids = document.querySelectorAll("esco-content-grid")
+            grids.forEach(grid => {
+              let grid_links = grid.shadowRoot.querySelectorAll("a");
+              [...grid_links].filter(a => /^http(?!.*\/uPortal\/.*)/i.test(a.href)).forEach(a => {
+                console.log(a.href)
+                if (a.onclick == outboundClick) {
+                  console.log("onclick set")
+                } else {
+                  console.log("onclick not set yet")
+                  a.onclick = outboundClick
+                }
+              })
             })
           }
 
@@ -144,7 +149,7 @@ under the License.
             addListeners()
             addGridListeners()
 
-            setInterval(addGridListeners, 1000);
+            setInterval(addGridListeners, 5000);
           }
       </script>
         ]]>
