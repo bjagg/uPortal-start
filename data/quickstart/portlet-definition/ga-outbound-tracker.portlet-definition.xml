@@ -100,7 +100,8 @@ under the License.
 
           const outboundClick = (el) => {
             console.log(el)
-            let title = el.path[0].closest('div.portlet-card').innerText;
+            let cardText = el.path[0].closest('div.portlet-card').innerText;
+            let title = /^([^\r\n\f]*)/.exec(cardText)[0];
             console.log(title)
             const e = el.path[0].closest('a')
             console.log(e)
