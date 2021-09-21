@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Licensed to Apereo under one or more contributor license
+    agreements. See the NOTICE file distributed with this work
+    for additional information regarding copyright ownership.
+    Apereo licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License.  You may obtain a
+    copy of the License at the following location:
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
+    <title>Student Financials</title>
+    <name>Student Financials</name>
+    <fname>student-financials-component</fname>
+    <desc>Student financial aid information</desc>
+    <type>Advanced CMS</type>
+    <timeout>5000</timeout>
+    <portlet-descriptor>
+        <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
+        <ns2:portletName>cms</ns2:portletName>
+    </portlet-descriptor>
+    <group>Authenticated Users</group>
+    <parameter>
+        <name>alternate</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>blockImpersonation</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>disableDynamicTitle</name>
+        <value>true</value>
+    </parameter>
+    <parameter>
+        <name>editable</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hasAbout</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hasHelp</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>hideFromMobile</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>highlight</name>
+        <value>false</value>
+    </parameter>
+    <parameter>
+        <name>iconUrl</name>
+        <value>/ResourceServingWebapp/rs/tango/0.8.90/32x32/status/dialog-warning.png</value>
+    </parameter>
+    <parameter>
+        <name>mobileIconUrl</name>
+        <value>/uPortal/media/skins/icons/mobile/bullhorn.png</value>
+    </parameter>
+    <parameter>
+        <name>showChrome</name>
+        <value>true</value>
+    </parameter>
+    <portlet-preference>
+        <name>content</name>
+        <readOnly>false</readOnly>
+        <value>
+            <![CDATA[
+                <script type="text/javascript">
+                    Vue.filter('dateFormat', function (value, format) {
+                        const epoch = parseInt(value);
+                        return dateFns.format(epoch, format);
+                    });
+                    Vue.mixin({
+                        data: () => ({ state: { show: false }, pstate: { show: false } })
+                    });
+                </script>
+                <api-template-vue debug data-api-url="/uPortal/api/finAid">
+                    <div class="student-financials bg-white" v-bind:style="{ 'font-family': 'sans-serif', 'font-size': '0.75rem' }">
+                        <div class="payments" v-if="data.payments.payments">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 v-bind:style="{ 'font-size': '1rem', 'font-weight': 'bold' }">Payments Due</h4>
+                                <button class="btn btn-secondary btn-sm" v-on:click="pstate.show = !pstate.show">
+                                    {{ pstate.show ? 'Hide' : 'Show' }} Data
+                                </button>
+                            </div>
+                            <div class="data position-relative">
+                                <div class="overlay position-absolute h-100 w-100 bg-white d-flex justify-content-center align-items-center font-weight-bold" v-bind:class="pstate.show ? 'invisible' : 'visible'">
+                                    You have a balance due.
+                                </div>
+                                <ul class="list-unstyled" v-bind:class="pstate.show ? 'visible' : 'invisible'">
+                                    <li v-for="payment in data.payments.payments" class="mb-2">
+                                        {{payment.name}}: {{ payment.amount }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="p-1 text-danger d-flex" v-if="data.payments.warning" v-bind:style="{'font-size': '0.9rem'}">
+                                <a v-bind:href="data.payments.warning.url" target="_blank" v-bind:style="{'text-decoration': 'none'}">
+                                    <img v-if="data.payments.warning.image"
+                                        v-bind:src="data.payments.warning.image"
+                                        v-bind:style="{'width': '30px', 'height': 'auto'}"
+                                        class="mr-2" />
+                                    <span class="sr-only">Help</span>
+                                </a>
+                                <span>{{ data.payments.warning.message }}</span>
+                            </p>
+                            <a class="btn btn-sm btn-outline-secondary" v-if="data.payments.paymentUrl" v-bind:href="data.payments.paymentUrl" target="_blank">
+                                $ Make a payment
+                            </a>
+                        </div>
+                        <div class="payments" v-else>
+                            <h4 v-bind:style="{ 'font-size': '1rem', 'font-weight': 'bold' }">Payments Due</h4>
+                            <div class="data position-relative">You do not currently owe any money.</div>
+                        </div>
+                        <hr />
+                        <div class="financial-aid" v-if="data.financialAid.accounts">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 v-bind:style="{ 'font-size': '1rem' }" class="m-0 mr-2 font-weight-bold">Financial Aid</h4>
+                                <button class="btn btn-secondary btn-sm" v-on:click="state.show = !state.show">
+                                    {{ state.show ? 'Hide' : 'Show' }} Data
+                                </button>
+                            </div>
+                            <div class="data position-relative">
+                                <div class="overlay position-absolute h-100 w-100 bg-white d-flex justify-content-center align-items-center font-weight-bold" v-bind:class="state.show ? 'invisible' : 'visible'">
+                                    Financial Information Hidden
+                                </div>
+                                <ul class="list-unstyled" v-bind:class="state.show ? 'visible' : 'invisible'">
+                                    <li v-for="account in data.financialAid.accounts" class="mb-2">
+                                        {{account.name}}: {{ account.amount }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="p-1 text-danger d-flex" v-if="data.financialAid.warning" v-bind:style="{'font-size': '0.9rem'}">
+                                <a v-bind:href="data.financialAid.warning.url" target="_blank" class="text-decoration-none">
+                                    <img v-if="data.financialAid.warning.image"
+                                        v-bind:src="data.financialAid.warning.image"
+                                        v-bind:style="{'width': '30px', 'height': 'auto'}"
+                                        class="mr-2" />
+                                    <span class="sr-only">Help</span>
+                                </a>
+                                <span>{{ data.financialAid.warning.message }}</span>
+                            </p>
+                            <div class="d-flex">
+                                <a v-if="data.financialAid.applyUrl" class="btn btn-sm btn-outline-secondary mr-2" v-bind:href="data.financialAid.applyUrl" target="_blank">
+                                    Apply for financial aid
+                                </a>
+                                <a v-if="data.financialAid.viewDetailsUrl" class="btn btn-sm btn-outline-secondary" v-bind:href="data.financialAid.viewDetailsUrl" target="_blank">
+                                    View financial aid details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="financial-aid" v-else>
+                            <h4 v-bind:style="{ 'font-size': '1rem' }" class="m-0 mr-2 font-weight-bold">Financial Aid</h4>
+                            <div class="data position-relative">You do not have financial aid data to display at this time.
+                            Please contact your Financial Aid Office if you need more information.</div>
+                            <div class="d-flex">
+                                <a v-if="data.financialAid.applyUrl" class="btn btn-sm btn-outline-secondary mr-2" v-bind:href="data.financialAid.applyUrl" target="_blank">
+                                    Apply for financial aid
+                                </a>
+                                <a v-if="data.financialAid.viewDetailsUrl" class="btn btn-sm btn-outline-secondary" v-bind:href="data.financialAid.viewDetailsUrl" target="_blank">
+                                    View financial aid details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </api-template-vue>
+            ]]>
+        </value>
+    </portlet-preference>
+</portlet-definition>

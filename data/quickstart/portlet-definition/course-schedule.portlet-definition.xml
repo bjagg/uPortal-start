@@ -20,10 +20,10 @@
 
 -->
 <portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
-    <title>Notification Icon</title>
-    <name>Notification Icon</name>
-    <fname>notification-icon</fname>
-    <desc>Icon-based launcher for the Apereo Notification portlet designed for the eyebrow region of the page</desc>
+    <title>Course Schedule</title>
+    <name>Course Schedule</name>
+    <fname>course-schedule-component</fname>
+    <desc>List of user courses</desc>
     <type>Advanced CMS</type>
     <timeout>5000</timeout>
     <portlet-descriptor>
@@ -80,11 +80,52 @@
         <readOnly>false</readOnly>
         <value>
             <![CDATA[
-                <script src="/resource-server/webjars/uportal__notification-icon/dist/notification-icon.min.js" type="text/javascript" defer></script>
-                <notification-icon
-                    see-all-notifications-url="/uPortal/p/notification-list"
-                    navigation-strategy="list"
-                    style="position: relative; top: -0.5rem;"></notification-icon>
+                <api-template-vue debug data-api-url="/uPortal/api/courses">
+                <div class="class-schedule" v-bind:style="{ 'font-family': 'sans-serif', 'font-size': '0.75rem' }">
+                    <p class="p-1 text-danger" v-bind:style="{'font-size': '1rem'}">
+                        <a v-bind:href="data.helpUrl" target="_blank" v-bind:style="{'text-decoration': 'none'}">
+                            <img src="/uPortal/media/images/information-icon.svg" v-bind:style="{'width': '30px', 'height': 'auto'}" class="mr-2" />
+                            <span class="sr-only">Help</span>
+                        </a>
+                        <span v-if="data.courses.some(c => c.waitlist)">You are currently on a waitlist for
+                            {{ data.courses.filter(c => c.waitlist).length }} course(s).</span>
+                    </p>
+                    <div v-for="course in data.courses" class="p-2 mb-2" v-bind:class="{'border border-danger rounded': course.waitlist}">
+                        <h3 v-bind:style="{ 'font-size': '0.9rem' }"><strong>{{ course.heading }}</strong></h3>
+                        <h4 v-bind:style="{ 'font-size': '0.9rem' }">{{ course.title }}</h4>
+                        <dl class="d-flex flex-row flex-wrap mb-0">
+                            <dt v-bind:style="{'flex-basis': '20%'}">Credit:</dt>
+                            <dd v-bind:style="{'flex-basis': '70%'}">{{ course.credit }}</dd>
+                            <dt v-bind:style="{'flex-basis': '20%'}" class="">Class dates:</dt>
+                            <dd v-bind:style="{'flex-basis': '70%'}">{{ course.dates }}</dd>
+                        </dl>
+                        <p class="mt-0"><strong>Class Schedule:</strong></p>
+                        <table class="table table-sm" v-bind:style="{ 'font-size': '11px' }">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Instructor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="section in course.sections">
+                                    <td>{{ section.type }}</td>
+                                    <td>{{ section.day }}</td>
+                                    <td>{{ section.time }}</td>
+                                    <td>{{ section.room }}</td>
+                                    <td>{{ section.instructor }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="font-weight-bold font-italic text-danger text-center" v-if="course.waitlist">
+                            On Wait List
+                        </p>
+                    </div>
+                </div>
+            </api-template-vue>
             ]]>
         </value>
     </portlet-preference>

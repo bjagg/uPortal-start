@@ -1,0 +1,20 @@
+description = "Custom Components for Example uPortal REST API"
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.apache.portals.pluto:pluto-container-api:${plutoVersion}"
+    compileOnly "org.jasig.portal:uPortal-api-rest:${uPortalVersion}"
+    compileOnly "org.jasig.portal:uPortal-io-types:${uPortalVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    compileOnly "${portletApiDependency}"
+    compileOnly "${servletApiDependency}"
+}

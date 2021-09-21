@@ -8,6 +8,9 @@ plugins {
 dependencies {
     runtime "org.jasig.portal:uPortal-webapp:${uPortalVersion}@war"
     compile configurations.jdbc
+
+    // custom REST API module
+    compile project(':custom:rest-api')
 }
 
 apply plugin: GradleImportExportPlugin

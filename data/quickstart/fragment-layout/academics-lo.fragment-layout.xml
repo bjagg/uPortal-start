@@ -46,6 +46,7 @@
           <value>50%</value>
         </structure-attribute>
         <channel fname="announcements" unremovable="false" hidden="false" immutable="false" ID="n9"/>
+        <channel fname="course-schedule-component" unremovable="false" hidden="false" immutable="false" ID="n12"/>
         <channel fname="courses" unremovable="false" hidden="false" immutable="false" ID="n10"/>
       </folder>
       <folder ID="s11" hidden="false" immutable="false" name="Column 2" type="regular" unremovable="false">
@@ -53,6 +54,7 @@
           <name>width</name>
           <value>50%</value>
         </structure-attribute>
+        <channel fname="student-financials-component" unremovable="false" hidden="false" immutable="false" ID="n19"/>
         <channel fname="google-docs" unremovable="false" hidden="false" immutable="false" ID="n13"/>
       </folder>
     </folder>

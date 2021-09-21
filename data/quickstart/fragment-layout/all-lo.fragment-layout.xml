@@ -28,6 +28,9 @@
          | have their own copies of the minimal portlets required to view and manage
          | their own layouts.
          +-->
+        <folder ID="s10" hidden="false" immutable="true" name="Hidden top" type="hidden-top" unremovable="true">
+            <channel fname="import-web-components" unremovable="false" hidden="false" immutable="false" ID="n11"/>
+        </folder>
         <folder ID="s20" hidden="true" immutable="true" name="Page Top folder" type="page-top" unremovable="true">
             <channel fname="dynamic-respondr-skin" unremovable="false" hidden="false" immutable="false" ID="n22"/>
             <channel fname="fragment-admin-exit" unremovable="false" hidden="false" immutable="false" ID="n24"/>

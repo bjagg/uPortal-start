@@ -21,3 +21,6 @@ include 'overlays:SimpleContentPortlet'
 include 'overlays:uPortal'
 include 'overlays:WeatherPortlet'
 include 'overlays:WebProxyPortlet'
+
+// include custom REST API controller module
+include 'custom:rest-api'

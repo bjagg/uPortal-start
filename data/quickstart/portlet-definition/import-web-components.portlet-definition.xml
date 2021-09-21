@@ -19,18 +19,18 @@
     under the License.
 
 -->
-<portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
-    <title>Notification Icon</title>
-    <name>Notification Icon</name>
-    <fname>notification-icon</fname>
-    <desc>Icon-based launcher for the Apereo Notification portlet designed for the eyebrow region of the page</desc>
-    <type>Advanced CMS</type>
+<portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/subscribed-fragment" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/event-aggregation" xmlns:ns7="https://source.jasig.org/schemas/uportal/io/user" xmlns:ns8="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
+    <title>Import Web Components</title>
+    <name>Import Web Components</name>
+    <fname>import-web-components</fname>
+    <desc>Hidden import of web components to avoid importing multiples</desc>
+    <type>Portlet</type>
     <timeout>5000</timeout>
     <portlet-descriptor>
         <ns2:webAppName>/SimpleContentPortlet</ns2:webAppName>
-        <ns2:portletName>cms</ns2:portletName>
+        <ns2:portletName>web-component</ns2:portletName>
     </portlet-descriptor>
-    <group>Authenticated Users</group>
+    <group>Everyone</group>
     <parameter>
         <name>alternate</name>
         <value>false</value>
@@ -80,11 +80,9 @@
         <readOnly>false</readOnly>
         <value>
             <![CDATA[
-                <script src="/resource-server/webjars/uportal__notification-icon/dist/notification-icon.min.js" type="text/javascript" defer></script>
-                <notification-icon
-                    see-all-notifications-url="/uPortal/p/notification-list"
-                    navigation-strategy="list"
-                    style="position: relative; top: -0.5rem;"></notification-icon>
+                <script type="text/javascript" src="https://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
+                <script type="text/javascript" src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
+                <script type="text/javascript" src="/resource-server/webjars/uportal__api-template-vue/dist/api-template-vue.min.js"></script>
             ]]>
         </value>
     </portlet-preference>

@@ -84,7 +84,6 @@
         <readOnly>false</readOnly>
         <value>
             <![CDATA[
-                <script src="/resource-server/webjars/vue/dist/vue.min.js"></script>
                 <script src="/resource-server/webjars/uportal__notification-list/dist/notification-list.min.js" defer></script>
                 <notification-list notification-api-url="/NotificationPortlet/api/v2/notifications?maxPriority=2" color-map="{
                         &quot;Parking&quot;: &quot;#6649bb&quot;,
