@@ -23,13 +23,13 @@ public class FinancialAidController {
 
     private static final String SQL = "select * from StudentFAAward where StudentID = ?";
 
-    @Value("${financial.aid.paymentUrl:https://secure.touchnet.net/C22766_tsa/web/caslogin.jsp}")
+    @Value("${financial.aid.paymentUrl:https://studentaid.edu/payment}")
     private String paymentUrl;
 
     @Value("${financial.aid.applyUrl:https://studentaid.edu/sa/fafsa}")
     private String applyUrl;
 
-    @Value("${financial.aid.viewDetailsUrl:https://selfservice.scccd.edu/Student/FinancialAid/Home}")
+    @Value("${financial.aid.viewDetailsUrl:https://studentaid.edu/details}")
     private String viewDetailsUrl;
 
     @Autowired

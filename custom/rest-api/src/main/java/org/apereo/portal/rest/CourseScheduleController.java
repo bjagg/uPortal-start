@@ -32,7 +32,7 @@ public class CourseScheduleController {
     StudentIdExtractor studentIdExtractor;
     @Autowired
     SimpleSqlIntegrationDao integrationDao;
-    @Value("${course.schedule.helpUrl:http://helpme.com}")
+    @Value("${course.schedule.helpUrl:http://helpme.edu}")
     private String helpUrl;
 
     static String getStringOrElse(Map<String, Object> rec, String field, String orElse) {
