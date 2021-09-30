@@ -1,0 +1,38 @@
+plugins {
+  id 'java'
+}
+
+description = "Example of a Custom Portlet"
+
+import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
+import org.apereo.portal.start.gradle.plugins.GradleTomcatDeployPlugin
+
+apply plugin: GradleTomcatDeployPlugin
+apply plugin: GradlePlutoPlugin
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  compileOnly "${servletApiDependency}"
+  compileOnly "${portletApiDependency}"
+  compileOnly "javax.servlet.jsp:javax.servlet.jsp-api:2.3.3"
+  compileOnly "javax.el:javax.el-api:3.0.0"
+
+  compile "taglibs:standard:1.1.2"
+  compile "javax.servlet:jstl:1.1.2"
+
+  compile "ch.qos.logback:logback-classic:1.2.3"
+  compile "org.springframework:spring-core:4.3.28.RELEASE"
+  compile "org.springframework:spring-beans:4.3.28.RELEASE"
+  compile "org.springframework:spring-context:4.3.28.RELEASE"
+  compile "org.springframework:spring-webmvc:4.3.28.RELEASE"
+  compile "org.springframework:spring-webmvc-portlet:4.3.28.RELEASE"
+  compile "org.springframework:spring-aop:4.3.28.RELEASE"
+  compile "org.springframework:spring-test:4.3.28.RELEASE"
+  //compile "org.jasig.resourceserver:resource-server-content:1.0.44"
+  compile "org.jasig.resourceserver:resource-server-utils:1.0.44"
+  testCompile "junit:junit:4.13"
+}
