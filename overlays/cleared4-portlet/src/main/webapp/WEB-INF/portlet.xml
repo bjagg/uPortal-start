@@ -26,11 +26,11 @@
     http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
     <portlet>
-        <portlet-name>example-portlet</portlet-name>
+        <portlet-name>cleared4-portlet</portlet-name>
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
-            <value>/WEB-INF/context/portlet/example-portlet.xml</value>
+            <value>/WEB-INF/context/portlet/cleared4-portlet.xml</value>
         </init-param>
         <!-- This value is to 0 in dev, can set to cache at a positive value in seconds 
             for caching, or -1 to never expire cache -->
@@ -38,11 +38,9 @@
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
-            <portlet-mode>edit</portlet-mode>
-            <portlet-mode>help</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Example Portlet</title>
+            <title>Cleared4 Portlet</title>
         </portlet-info>
         <portlet-preferences>
             <preference>
@@ -56,8 +54,8 @@
         <name>displayName</name>
     </user-attribute>
     <user-attribute>
-        <description>User Email Address</description>
-        <name>mail</name>
+        <description>User ID</description>
+        <name>user.login.id</name>
     </user-attribute>
 
 </portlet-app>

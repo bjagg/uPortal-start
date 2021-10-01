@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to Apereo under one or more contributor license
+    agreements. See the NOTICE file distributed with this work
+    for additional information regarding copyright ownership.
+    Apereo licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License.  You may obtain a
+    copy of the License at the following location:
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Custom uPortal tech that supports global.properties and Jasypt encryption -->
+    <bean id="propertyConfigurer" class="org.springframework.context.support.PortalPropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:configuration.properties</value>
+                <!--
+                 | The following optional files allow deployers to set or override most
+                 | configuration settings in a manner that is outside the footprint of the
+                 | build/deploy cycle and SCM.
+                 |
+                 | Reasons for choosing that may include:
+                 |   - Desire to keep sensitive information out of your Git repository
+                 |   - Ability to change some common settings without a full build and deploy cycle
+                 |   - Building a WAR/EAR that is environment-independent
+                 |
+                 | Any property defined in the above files that is referenced in the Spring context
+                 | may be overridden in one (or both) of these files.  Later files override earlier
+                 | files.
+                 |
+                 | The conventional location of ${portal.home} is ${catalina.base}/portal;  but you
+                 | can (typically) override that location using a PORTAL_HOME environment variable.
+                 | (Ultimately it depends on your setenv.sh or setenv.bat file.)
+                 |
+                 | The first file (global.properties) may contain properties that are shared with
+                 | other modules (e.g. portlets) in Tomcat.  Several Apereo portlets source
+                 | global.properties automatically.  The second file (announcements.properties) is
+                 | (should be) sourced by this module exclusively.
+                 +-->
+                <value>file:${portal.home}/global.properties</value>
+                <value>file:${portal.home}/cleared4.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:location="classpath:configuration.properties" />
+
+    <!-- Message source for this context, loaded from localized "messages_xx" files -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Default View Resolver -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+        p:cache="${viewResCache}"
+        p:viewClass="org.springframework.web.servlet.view.JstlView"
+        p:prefix="/WEB-INF/jsp/"
+        p:suffix=".jsp" />
+
+    <bean id="dataSource"
+          class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close"
+          p:driverClassName="${hibernate.connection.driver_class:org.hsqldb.jdbc.JDBCDriver}"
+          p:url="${hibernate.connection.url:jdbc:hsqldb:hsql://localhost:8887/uPortal}"
+          p:username="${hibernate.connection.username:sa}"
+          p:password="${hibernate.connection.password:}"
+          p:validationQuery="${hibernate.connection.validationQuery:select 1 from INFORMATION_SCHEMA.SYSTEM_USERS}"
+          p:validationQueryTimeout="${tomcat.jdbc.pool.newsReaderDataSource.validationQueryTimeout:7}"
+          p:initialSize="${tomcat.jdbc.pool.newsReaderDataSource.initialSize:5}"
+          p:maxActive="${tomcat.jdbc.pool.newsReaderDataSource.maxActive:50}"
+          p:maxIdle="${tomcat.jdbc.pool.newsReaderDataSource.maxIdle:15}"
+          p:minIdle="${tomcat.jdbc.pool.newsReaderDataSource.minIdle:2}"
+
+          p:maxWait="${tomcat.jdbc.pool.newsReaderDataSource.maxWait:10000}"
+          p:testOnBorrow="${tomcat.jdbc.pool.newsReaderDataSource.testOnBorrow:true}"
+          p:testWhileIdle="${tomcat.jdbc.pool.newsReaderDataSource.testWhileIdle:true}"
+          p:minEvictableIdleTimeMillis="${tomcat.jdbc.pool.newsReaderDataSource.minEvictableIdleTimeMillis:60000}"
+          p:timeBetweenEvictionRunsMillis="${tomcat.jdbc.pool.newsReaderDataSource.timeBetweenEvictionRunsMillis:10000}"
+          p:removeAbandoned="${tomcat.jdbc.pool.newsReaderDataSource.removeAbandoned:true}"
+          p:removeAbandonedTimeout="${tomcat.jdbc.pool.newsReaderDataSource.removeAbandonedTimeout:120}"
+          p:logAbandoned="${tomcat.jdbc.pool.newsReaderDataSource.logAbandoned:true}"
+          p:numTestsPerEvictionRun="${tomcat.jdbc.pool.newsReaderDataSource.numTestsPerEvictionRun:5}"
+          p:jdbcInterceptors="${tomcat.jdbc.pool.newsReaderDataSource.jdbcInterceptors:ConnectionState(useEquals=true);StatementFinalizer(trace=true);ResetAbandonedTimer;SlowQueryReport}"
+    />
+
+</beans>

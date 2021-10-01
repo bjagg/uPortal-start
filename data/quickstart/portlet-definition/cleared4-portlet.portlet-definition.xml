@@ -20,21 +20,21 @@
 
 -->
 <portlet-definition xmlns="https://source.jasig.org/schemas/uportal/io/portlet-definition" xmlns:ns2="https://source.jasig.org/schemas/uportal" xmlns:ns3="https://source.jasig.org/schemas/uportal/io/permission-owner" xmlns:ns4="https://source.jasig.org/schemas/uportal/io/stylesheet-descriptor" xmlns:ns5="https://source.jasig.org/schemas/uportal/io/portlet-type" xmlns:ns6="https://source.jasig.org/schemas/uportal/io/user" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="https://source.jasig.org/schemas/uportal/io/portlet-definition https://source.jasig.org/schemas/uportal/io/portlet-definition/portlet-definition-4.0.xsd">
-    <title>Example</title>
-    <name>Example</name>
-    <fname>example-portlet</fname>
-    <desc>Example portlet</desc>
+    <title>Cleared4</title>
+    <name>Cleared4</name>
+    <fname>cleared4-portlet</fname>
+    <desc>Cleared4 portlet</desc>
     <type>Portlet</type>
     <timeout>60000</timeout>
     <portlet-descriptor>
-        <ns2:webAppName>/example-portlet</ns2:webAppName>
-        <ns2:portletName>example-portlet</ns2:portletName>
+        <ns2:webAppName>/cleared4-portlet</ns2:webAppName>
+        <ns2:portletName>cleared4-portlet</ns2:portletName>
     </portlet-descriptor>
-    <category>Testing</category>
-    <group>Everyone</group>
+    <category>Information</category>
+    <group>Authenticated Users</group>
     <permissions>
         <permission system="UP_PORTLET_SUBSCRIBE" activity="BROWSE">
-            <group>Everyone</group>
+            <group>Authenticated Users</group>
         </permission>
     </permissions>
     <parameter>

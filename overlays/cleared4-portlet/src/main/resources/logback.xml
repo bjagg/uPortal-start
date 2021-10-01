@@ -27,7 +27,7 @@
 <!--    http://www.qos.ch/shop/products/professionalSupport         -->
 <!--                                                                -->
 <configuration scan="true" scanPeriod="30 seconds">
-    <contextName>example-portlet</contextName>
+    <contextName>cleared4-portlet</contextName>
 
     <!--
      | Propagate log levels to java.util.logging

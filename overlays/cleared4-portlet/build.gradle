@@ -2,7 +2,7 @@ plugins {
   id 'java'
 }
 
-description = "Example of a Custom Portlet"
+description = "Cleared4 Portlet"
 
 import org.apereo.portal.start.gradle.plugins.GradlePlutoPlugin
 import org.apereo.portal.start.gradle.plugins.GradleTomcatDeployPlugin
@@ -16,6 +16,16 @@ repositories {
 }
 
 dependencies {
+  // database dependencies
+  compile configurations.jdbc
+  compile "org.apache.tomcat:tomcat-jdbc:${tomcatVersion}"
+
+  // global.properties support
+  compile(group: 'org.jasig.portal', name: 'uPortal-spring', version: "${uPortalVersion}") {
+    transitive = false
+  }
+  compile "org.jasypt:jasypt:${jasyptVersion}"
+
   compileOnly "${servletApiDependency}"
   compileOnly "${portletApiDependency}"
   compileOnly "javax.servlet.jsp:javax.servlet.jsp-api:2.3.3"
@@ -26,6 +36,7 @@ dependencies {
 
   compile "ch.qos.logback:logback-classic:1.2.3"
   compile "org.springframework:spring-core:4.3.28.RELEASE"
+  compile "org.springframework:spring-jdbc:4.3.28.RELEASE"
   compile "org.springframework:spring-beans:4.3.28.RELEASE"
   compile "org.springframework:spring-context:4.3.28.RELEASE"
   compile "org.springframework:spring-webmvc:4.3.28.RELEASE"
