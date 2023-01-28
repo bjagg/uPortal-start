@@ -80,7 +80,7 @@
     <readOnly>false</readOnly>
     <value>
         <![CDATA[
-            <script src="/fbms/webjars/uportal__form-builder/1.3.2/build/static/js/form-builder.js"></script>
+            <script src="/resource-server/webjars/uportal__form-builder/build/static/js/form-builder.js"></script>
             <form-builder
               fbms-base-url="/fbms"
               fbms-form-fname="validate-sms"
